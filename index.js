@@ -19,10 +19,45 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+// THIS SECTION IS MY CODE:
+
+app.get("/api/", function (req, res) {
+  let unixDate = new Date().getTime();
+  let time = new Date(unixDate).toGMTString();
+
+  res.json({
+    unix: unixDate,
+    utc: time
+  });
 });
+
+app.get("/api/:string", (req,res) => {
+  let { string } = req.params;
+  let unixDate = "";
+  let time = "";
+
+  if (!isNaN(string)) {
+    unixDate = Number(string);
+  } else {
+    unixDate = Date.parse(string);
+  }
+  time = new Date(unixDate).toGMTString();
+
+  console.log("unix: " + unixDate + " time " + time);
+  
+  if (!unixDate && unixDate !== 0) {
+    res.json({
+    error : "Invalid Date"
+  });
+  } else {
+    res.json({
+    unix: unixDate,
+    utc: time
+  });
+  }
+
+});
+
 
 
 
